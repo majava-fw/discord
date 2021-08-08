@@ -18,13 +18,13 @@
 
 package tech.majava.discord.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cz.majksa.commons.majava.context.config.ConfigNode;
-import cz.majksa.commons.majava.modules.ModuleConfig;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonMerge;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import tech.majava.context.config.Config;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
 
 /**
  * <p><b>Class {@link tech.majava.discord.config.DiscordConfig}</b></p>
@@ -33,15 +33,15 @@ import java.util.Map;
  * @version 1.0.0
  * @since 1.0.0
  */
-@Getter
-public class DiscordConfig extends ModuleConfig {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class DiscordConfig implements Config {
 
-    private final JDAConfig jda;
+    private static final long serialVersionUID = 7764322368110124831L;
 
-    public DiscordConfig(@Nonnull ConfigNode node) {
-        super(node);
-        final Map<?, ?> map = node.get("jda");
-        this.jda = new ObjectMapper().convertValue(map, JDAConfig.class);
-    }
+    @Nonnull
+    @JsonMerge
+    private JDAConfig jda = new JDAConfig();
 
 }

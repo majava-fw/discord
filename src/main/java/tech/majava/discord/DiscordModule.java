@@ -18,19 +18,17 @@
 
 package tech.majava.discord;
 
-import cz.majksa.commons.majava.context.ApplicationContext;
-import cz.majksa.commons.majava.listeners.ListenersModule;
-import cz.majksa.commons.majava.logging.LoggingModule;
-import cz.majksa.commons.majava.modules.Module;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.GenericEvent;
+import tech.majava.context.ApplicationContext;
 import tech.majava.discord.config.DiscordConfig;
-import tech.majava.discord.listeners.DiscordEventsHandler;
+import tech.majava.listeners.ListenersModule;
+import tech.majava.logging.LoggingModule;
+import tech.majava.modules.Module;
 
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -74,7 +72,6 @@ public final class DiscordModule extends Module<DiscordConfig> {
     @Override
     protected CompletableFuture<Void> onShutdown() {
         return CompletableFuture.runAsync(() -> {
-            handler.stop();
             listeners.unregisterHandler(GenericEvent.class);
             jda.shutdown();
         });

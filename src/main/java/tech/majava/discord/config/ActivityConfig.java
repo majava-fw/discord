@@ -18,12 +18,13 @@
 
 package tech.majava.discord.config;
 
-import cz.majksa.commons.majava.context.config.Config;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.dv8tion.jda.api.entities.Activity;
+import tech.majava.context.config.Config;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,19 +36,19 @@ import javax.annotation.Nullable;
  * @version 1.0.0
  * @since 1.0.0
  */
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ActivityConfig implements Config {
 
+    private static final long serialVersionUID = -8534799885704610978L;
+
     @Nonnull
     private Activity.ActivityType type;
 
-    @Setter
     @Nonnull
     private String name;
 
-    @Setter
     @Nullable
     private String url = null;
 
