@@ -18,16 +18,15 @@
 
 package tech.majava.discord.config;
 
-import cz.majksa.commons.majava.context.config.Config;
-import cz.majksa.commons.majava.context.config.Methods;
+import com.fasterxml.jackson.annotation.JsonMerge;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import tech.majava.context.config.Config;
+import tech.majava.context.config.Methods;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,26 +43,31 @@ import java.util.function.BiFunction;
  * @version 1.0.0
  * @since 1.0.0
  */
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class JDAConfig implements Config {
 
-    @Setter
+    private static final long serialVersionUID = -2453809007234860799L;
+
     @Nonnull
+    @JsonMerge
     private String token;
 
     @Nonnull
+    @JsonMerge
     private Template template = Template.DEFAULT;
 
     @Nonnull
+    @JsonMerge
     private EnumSet<GatewayIntent> intents = GatewayIntent.getIntents(GatewayIntent.DEFAULT);
 
-    @Setter
     @Nullable
+    @JsonMerge
     private ActivityConfig activity = null;
 
     @Nullable
+    @JsonMerge
     private Methods modifier = null;
 
     @Nullable
