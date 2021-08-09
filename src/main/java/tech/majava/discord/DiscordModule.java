@@ -59,7 +59,7 @@ public final class DiscordModule extends Module<DiscordConfig> {
             listeners = context.getModules().get(ListenersModule.class);
             logging = context.getModules().get(LoggingModule.class);
             try {
-                jda = config.getJda().toBuilder().build().awaitReady();
+                jda = config.toBuilder().build().awaitReady();
                 handler = new DiscordEventsHandler(logging, jda);
                 listeners.registerHandler(GenericEvent.class, handler);
             } catch (InterruptedException | LoginException e) {

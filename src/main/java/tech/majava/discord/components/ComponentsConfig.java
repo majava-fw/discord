@@ -1,5 +1,5 @@
 /*
- *  discord - tech.majava.discord.EscapingLocale
+ *  discord - tech.majava.discord.config.DiscordConfig
  *  Copyright (C) 2021  Majksa
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,29 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package tech.majava.discord;
+package tech.majava.discord.components;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import tech.majava.context.config.Config;
 
 /**
- * <p><b>Class {@link tech.majava.discord.EscapingLocale}</b></p>
+ * <p><b>Class {@link ComponentsConfig}</b></p>
  *
  * @author majksa
  * @version 1.0.0
  * @since 1.0.0
  */
 @Data
-@AllArgsConstructor
-public class EscapingLocale {
+@NoArgsConstructor
+public class ComponentsConfig implements Config {
 
-    /**
-     * The text that replaces new lines
-     */
-    private String newLineReplacement;
-    /**
-     * The text that replaces apostrophes
-     */
-    private String apostropheReplacement;
+    private static final long serialVersionUID = -1157526018996814088L;
 
 }

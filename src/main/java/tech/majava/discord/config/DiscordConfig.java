@@ -22,9 +22,19 @@ import com.fasterxml.jackson.annotation.JsonMerge;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import tech.majava.context.config.Config;
+import tech.majava.context.config.Methods;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.function.BiFunction;
 
 /**
  * <p><b>Class {@link tech.majava.discord.config.DiscordConfig}</b></p>
@@ -38,10 +48,73 @@ import javax.annotation.Nonnull;
 @AllArgsConstructor
 public class DiscordConfig implements Config {
 
-    private static final long serialVersionUID = 7764322368110124831L;
+    private static final long serialVersionUID = -2453809007234860799L;
 
     @Nonnull
     @JsonMerge
-    private JDAConfig jda = new JDAConfig();
+    private String token;
+
+    @Nonnull
+    @JsonMerge
+    private Template template = Template.DEFAULT;
+
+    @Nonnull
+    @JsonMerge
+    private EnumSet<GatewayIntent> intents = GatewayIntent.getIntents(GatewayIntent.DEFAULT);
+
+    @Nullable
+    @JsonMerge
+    private ActivityConfig activity = null;
+
+    @Nullable
+    @JsonMerge
+    private Methods modifier = null;
+
+    @Nullable
+    public Method getModifier() {
+        if (modifier == null) {
+            return null;
+        }
+        return modifier.get(JDABuilder.class.getName());
+    }
+
+    public void setTemplate(@Nonnull String name) {
+        template = Template.valueOf(name.toUpperCase());
+    }
+
+    public void setIntents(int intents) {
+        this.intents = GatewayIntent.getIntents(intents);
+    }
+
+    @Nonnull
+    public JDABuilder toBuilder() {
+        final JDABuilder builder = template.createBuilder(token, intents);
+        if (activity != null) {
+            builder.setActivity(activity.toActivity());
+        }
+        final Method modifier = getModifier();
+        if (modifier != null) {
+            try {
+                modifier.invoke(null, builder);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return builder;
+    }
+
+    @RequiredArgsConstructor
+    public enum Template {
+        NONE(JDABuilder::create),
+        DEFAULT(JDABuilder::createDefault),
+        LIGHT(JDABuilder::createLight);
+
+        private final BiFunction<String, Collection<GatewayIntent>, JDABuilder> constuctor;
+
+        public JDABuilder createBuilder(@Nonnull String token, @Nonnull EnumSet<GatewayIntent> intents) {
+            return constuctor.apply(token, intents);
+        }
+
+    }
 
 }

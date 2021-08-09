@@ -1,5 +1,5 @@
 /*
- *  majbot - DiscordUtils
+ *  discord - tech.majava.discord.DiscordUtils
  *  Copyright (C) 2021  Majksa
  *
  * This program is free software: you can redistribute it and/or modify
