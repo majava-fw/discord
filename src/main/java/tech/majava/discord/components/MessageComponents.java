@@ -18,28 +18,18 @@
 
 package tech.majava.discord.components;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
-import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.Button;
-import net.dv8tion.jda.api.interactions.components.Component;
-import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
-import tech.majava.discord.templating.MessageTemplate;
+import tech.majava.discord.responses.MessageModifier;
+import tech.majava.discord.responses.MessageTemplate;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * <p><b>Class {@link MessageComponents}</b></p>
@@ -49,11 +39,10 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 @RequiredArgsConstructor
-public class MessageComponents {
+public class MessageComponents implements MessageModifier {
 
     @Nonnull
     private final ComponentsModule module;
-    @Getter
     @Nonnull
     private final MessageAction action;
     private final List<ActionRow> rows = new ArrayList<>();
@@ -73,53 +62,17 @@ public class MessageComponents {
         return new MessageComponents(module, original.reply(template.build()));
     }
 
-    public MessageComponents addRow(@Nonnull Consumer<MessageRow> rowModifier) {
-        final MessageRow row = new MessageRow(module);
+    public MessageComponents addRow(@Nonnull Consumer<ComponentsRow> rowModifier) {
+        final ComponentsRow row = new ComponentsRow(module);
         rowModifier.accept(row);
         rows.add(row.toRow());
         return this;
     }
 
-    @RequiredArgsConstructor
-    public static class MessageRow {
-
-        @Nonnull
-        private final ComponentsModule module;
-        @Nonnull
-        private final List<Component> components = new ArrayList<>();
-
-
-        /**
-         * Adds a button to message
-         *
-         * @param button   button itself
-         * @param callback button callback
-         */
-        public void addButton(@Nonnull Button button, @Nonnull Function<ButtonClickEvent, CompletableFuture<Void>> callback) {
-            components.add(button);
-            module.registerButton(Objects.requireNonNull(button.getId()), callback);
-        }
-
-        /**
-         * Adds a selection menu to message
-         *
-         * @param menu     menu itself
-         * @param callback menu callback
-         */
-        public void addSelection(@Nonnull SelectionMenu menu, @Nonnull Function<SelectionMenuEvent, CompletableFuture<Void>> callback) {
-            components.add(menu);
-            module.registerSelection(Objects.requireNonNull(menu.getId()), callback);
-        }
-
-        public ActionRow toRow() {
-            return ActionRow.of(components);
-        }
-
-    }
-
     @Nonnull
-    public CompletableFuture<Message> send() {
-        return action.setActionRows(rows).submit();
+    @Override
+    public MessageAction build() {
+        return action.setActionRows(rows);
     }
 
 }
