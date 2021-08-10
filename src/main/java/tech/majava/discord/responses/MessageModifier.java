@@ -30,6 +30,6 @@ import net.dv8tion.jda.api.requests.RestAction;
  */
 public interface MessageModifier {
 
-    RestAction<Message> build();
+    RestAction<Message> modify();
 
 }

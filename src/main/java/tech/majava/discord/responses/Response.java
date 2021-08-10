@@ -22,6 +22,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import net.dv8tion.jda.api.requests.restaction.WebhookMessageUpdateAction;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
@@ -42,6 +44,7 @@ public abstract class Response<T extends RestAction<Message>> {
     @Getter
     @Nonnull
     protected final T action;
+
     @Nonnull
     protected final List<Consumer<Message>> callbacks = new LinkedList<>();
 

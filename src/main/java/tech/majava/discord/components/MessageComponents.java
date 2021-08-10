@@ -22,9 +22,12 @@ import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import net.dv8tion.jda.api.requests.restaction.WebhookMessageUpdateAction;
 import tech.majava.discord.responses.MessageModifier;
 import tech.majava.discord.responses.MessageTemplate;
+import tech.majava.discord.responses.Response;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -39,30 +42,17 @@ import java.util.function.Consumer;
  * @since 1.0.0
  */
 @RequiredArgsConstructor
-public class MessageComponents implements MessageModifier {
+public class MessageComponents<R extends RestAction<Message>> implements MessageModifier {
 
     @Nonnull
     private final ComponentsModule module;
     @Nonnull
-    private final MessageAction action;
+    private final Response<R> response;
+    @Nonnull
     private final List<ActionRow> rows = new ArrayList<>();
 
     @Nonnull
-    public static MessageComponents send(@Nonnull ComponentsModule module, @Nonnull MessageChannel channel, @Nonnull MessageTemplate template) {
-        return new MessageComponents(module, channel.sendMessage(template.build()));
-    }
-
-    @Nonnull
-    public static MessageComponents edit(@Nonnull ComponentsModule module, @Nonnull Message original, @Nonnull MessageTemplate template) {
-        return new MessageComponents(module, original.editMessage(template.build()));
-    }
-
-    @Nonnull
-    public static MessageComponents reply(@Nonnull ComponentsModule module, @Nonnull Message original, @Nonnull MessageTemplate template) {
-        return new MessageComponents(module, original.reply(template.build()));
-    }
-
-    public MessageComponents addRow(@Nonnull Consumer<ComponentsRow> rowModifier) {
+    public MessageComponents<R> addRow(@Nonnull Consumer<ComponentsRow> rowModifier) {
         final ComponentsRow row = new ComponentsRow(module);
         rowModifier.accept(row);
         rows.add(row.toRow());
@@ -71,8 +61,16 @@ public class MessageComponents implements MessageModifier {
 
     @Nonnull
     @Override
-    public MessageAction build() {
-        return action.setActionRows(rows);
+    @SuppressWarnings("unchecked")
+    public R modify() {
+        final R action = response.getAction();
+        if (action instanceof MessageAction) {
+            return (R) ((MessageAction) action).setActionRows(rows);
+        }
+        if (action instanceof WebhookMessageUpdateAction) {
+            return (R) ((WebhookMessageUpdateAction<Message>) action).setActionRows(rows);
+        }
+        return action;
     }
 
 }
