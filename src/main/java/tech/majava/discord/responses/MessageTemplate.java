@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package tech.majava.discord.templating;
+package tech.majava.discord.responses;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * <p><b>Interface {@link tech.majava.discord.templating.MessageTemplate}</b></p>
+ * <p><b>Interface {@link tech.majava.discord.responses.MessageTemplate}</b></p>
  *
  * @author majksa
  * @version 1.0.0
@@ -77,7 +77,7 @@ public interface MessageTemplate extends Appendable {
      * Create a new embed builder and modify it
      *
      * @param consumer the consumer to modify the embed builder
-     * @return {@link tech.majava.discord.templating.MessageTemplate}
+     * @return {@link tech.majava.discord.responses.MessageTemplate}
      */
     default @NotNull MessageTemplate addEmbedBuilder(@NotNull Consumer<EmbedBuilder> consumer) {
         consumer.accept(addEmbedBuilder());
@@ -88,7 +88,7 @@ public interface MessageTemplate extends Appendable {
      * Adds the provided embed builder
      *
      * @param embedBuilder the embed builder to be added
-     * @return {@link tech.majava.discord.templating.MessageTemplate}
+     * @return {@link tech.majava.discord.responses.MessageTemplate}
      */
     default @NotNull MessageTemplate addEmbedBuilder(@NotNull EmbedBuilder embedBuilder) {
         getEmbedBuilders().add(embedBuilder);
@@ -108,7 +108,7 @@ public interface MessageTemplate extends Appendable {
     }
 
     /**
-     * Buils the {@link tech.majava.discord.templating.MessageTemplate} into {@link net.dv8tion.jda.api.entities.Message Message}.
+     * Buils the {@link tech.majava.discord.responses.MessageTemplate} into {@link net.dv8tion.jda.api.entities.Message Message}.
      *
      * @return the built {@link net.dv8tion.jda.api.entities.Message Message}
      */
@@ -120,7 +120,7 @@ public interface MessageTemplate extends Appendable {
      * {@inheritDoc}
      *
      * @param c the char to be added
-     * @return {@link tech.majava.discord.templating.MessageTemplate}
+     * @return {@link tech.majava.discord.responses.MessageTemplate}
      */
     @Override
     default @NotNull MessageTemplate append(char c) {
@@ -134,7 +134,7 @@ public interface MessageTemplate extends Appendable {
      * @param csq The character sequence to append.  If {@code csq} is
      *            {@code null}, then the four characters {@code "null"} are
      *            appended to this Appendable.
-     * @return {@link tech.majava.discord.templating.MessageTemplate}
+     * @return {@link tech.majava.discord.responses.MessageTemplate}
      */
     @Override
     default @NotNull MessageTemplate append(CharSequence csq) {
@@ -152,7 +152,7 @@ public interface MessageTemplate extends Appendable {
      * @param start The index of the first character in the subsequence
      * @param end   The index of the character following the last character in the
      *              subsequence
-     * @return {@link tech.majava.discord.templating.MessageTemplate}
+     * @return {@link tech.majava.discord.responses.MessageTemplate}
      */
     @Override
     default @NotNull MessageTemplate append(CharSequence csq, int start, int end) {
@@ -163,7 +163,7 @@ public interface MessageTemplate extends Appendable {
     /**
      * Clears the content
      *
-     * @return {@link tech.majava.discord.templating.MessageTemplate}
+     * @return {@link tech.majava.discord.responses.MessageTemplate}
      */
     default @NotNull MessageTemplate clearContent() {
         getContentBuilder().setLength(0);
@@ -173,7 +173,7 @@ public interface MessageTemplate extends Appendable {
     /**
      * Clears all embeds and the default embed
      *
-     * @return {@link tech.majava.discord.templating.MessageTemplate}
+     * @return {@link tech.majava.discord.responses.MessageTemplate}
      */
     default @NotNull MessageTemplate clearEmbeds() {
         forEachEmbed(EmbedBuilder::clear);

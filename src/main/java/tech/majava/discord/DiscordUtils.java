@@ -28,7 +28,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
-import tech.majava.discord.templating.MessageTemplate;
+import tech.majava.discord.responses.MessageTemplate;
 
 import java.util.AbstractMap;
 import java.util.Arrays;

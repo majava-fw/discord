@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package tech.majava.discord.templating;
+package tech.majava.discord.responses;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p><b>Class {@link tech.majava.discord.templating.MessageTemplateImpl}</b></p>
+ * <p><b>Class {@link tech.majava.discord.responses.MessageTemplateImpl}</b></p>
  *
  * @author majksa
  * @version 1.0.0
