@@ -58,6 +58,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.majksa-commons</groupId>
+            <artifactId>async</artifactId>
+            <version>v1.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.5</version>

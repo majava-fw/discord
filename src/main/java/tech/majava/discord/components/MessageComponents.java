@@ -61,14 +61,12 @@ public class MessageComponents<R extends RestAction<Message>> implements Message
 
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
     public R modify() {
         final R action = response.getAction();
         if (action instanceof MessageAction) {
-            return (R) ((MessageAction) action).setActionRows(rows);
-        }
-        if (action instanceof WebhookMessageUpdateAction) {
-            return (R) ((WebhookMessageUpdateAction<Message>) action).setActionRows(rows);
+            ((MessageAction) action).setActionRows(rows);
+        } else if (action instanceof WebhookMessageUpdateAction) {
+            ((WebhookMessageUpdateAction<?>) action).setActionRows(rows);
         }
         return action;
     }
