@@ -29,11 +29,13 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -79,10 +81,10 @@ public final class RequestInjector<R extends Request> {
     }
 
     public String convertOptionName(@Nonnull String text) {
-        final String convert = CaseFormat.LOWER_HYPHEN
-                .converterTo(CaseFormat.LOWER_UNDERSCORE)
+        final String convert = CaseFormat.LOWER_UNDERSCORE
+                .converterTo(CaseFormat.LOWER_HYPHEN)
                 .convert(text);
-        return CaseFormat.LOWER_UNDERSCORE
+        return CaseFormat.LOWER_HYPHEN
                 .converterTo(CaseFormat.UPPER_CAMEL)
                 .convert(convert);
     }

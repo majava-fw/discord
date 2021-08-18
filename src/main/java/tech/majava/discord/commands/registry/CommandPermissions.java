@@ -28,6 +28,7 @@ import net.dv8tion.jda.api.interactions.commands.privileges.CommandPrivilege;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -47,8 +48,8 @@ public class CommandPermissions {
     @Nonnull
     protected final Guild guild;
     @Nonnull
-    protected final Map<Long, CommandPrivilege> allowed = new ConcurrentHashMap<>();
-    protected final Map<Long, CommandPrivilege> disallowed = new ConcurrentHashMap<>();
+    protected final Map<Long, CommandPrivilege> allowed = new HashMap<>();
+    protected final Map<Long, CommandPrivilege> disallowed = new HashMap<>();
 
     public Collection<CommandPrivilege> getPrivileges() {
         final Collection<CommandPrivilege> privileges = allowed.values();
