@@ -4,7 +4,7 @@ import java.lang.Exception;
 
 #parse("File Header.java")
 /**
- * <p><b>Exception {@link ${NAME}}</b></p>
+ * <p><b>Exception {@link ${NAME}Exception}</b></p>
  *
  * @author ${USER}
  * @version #parse("Version.txt")

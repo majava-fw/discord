@@ -22,6 +22,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import net.dv8tion.jda.api.EmbedBuilder;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,7 +62,11 @@ public class MessageTemplateImpl implements MessageTemplate {
      * @param template the template to copy
      */
     public MessageTemplateImpl(@NonNull MessageTemplate template) {
-        this(template.getEmbedBuilders(), template.getDefaultEmbedBuilder(), template.getContentBuilder());
+        this(
+                new LinkedList<>(template.getEmbedBuilders()),
+                new EmbedBuilder(template.getDefaultEmbedBuilder()),
+                new StringBuilder(template.getContentBuilder())
+        );
     }
 
     /**

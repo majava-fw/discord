@@ -48,7 +48,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.3.0_305</version>
+            <version>4.3.0_309</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -61,6 +61,11 @@
             <groupId>com.github.majksa-commons</groupId>
             <artifactId>async</artifactId>
             <version>v1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>30.1.1-jre</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
