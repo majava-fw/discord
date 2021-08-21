@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -100,18 +99,17 @@ public class CommandsManager {
 
     @Nonnull
     private Response runCommand(@Nonnull SlashCommandEvent event, @Nonnull CommandStructure command) {
-        final Supplier<MessageTemplate> messageTemplate;
+        final ResponseBuilder responseBuilder = new ResponseBuilder();
         try {
             return command.run(event);
         } catch (CommandException e) {
-            messageTemplate = () -> new MessageTemplateImpl().append(":exclamation:").append(e.getMessage());
+            responseBuilder.setTemplate(() -> new MessageTemplateImpl().append(":exclamation:").append(e.getMessage()));
+            responseBuilder.setEphemeral(e.isEphemeral());
         } catch (Throwable throwable) {
-            messageTemplate = () -> INTERNAL_ERROR_TEMPLATE;
+            responseBuilder.setTemplate(INTERNAL_ERROR_TEMPLATE);
+            responseBuilder.setEphemeral(true);
         }
-        return new ResponseBuilder()
-                .setEphemeral(true)
-                .setTemplate(messageTemplate)
-                .build();
+        return responseBuilder.build();
     }
 
 }

@@ -34,8 +34,11 @@ public class CommandException extends Exception {
 
     private static final long serialVersionUID = 7702892504816479375L;
 
-    public CommandException(@Nonnull String message) {
+    private final boolean ephemeral;
+
+    public CommandException(@Nonnull String message, boolean ephemeral) {
         super(message);
+        this.ephemeral = ephemeral;
     }
 
 }
