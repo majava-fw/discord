@@ -35,7 +35,6 @@ import java.util.concurrent.CompletableFuture;
  * @version 1.0.0
  * @since 1.0.0
  */
-@FunctionalInterface
 public interface Command<R extends Request> {
 
     @Nonnull
@@ -48,18 +47,6 @@ public interface Command<R extends Request> {
     }
 
     @Nonnull
-    @SuppressWarnings("unchecked")
-    default Class<R> getRequestClass() {
-        for (Method method : getClass().getMethods()) {
-            if (!method.getName().equals("run")) {
-                continue;
-            }
-            if (method.getParameterCount() != 1) {
-                continue;
-            }
-            return (Class<R>) method.getParameterTypes()[0];
-        }
-        throw new NullPointerException();
-    }
+    Class<R> getRequestClass();
 
 }
