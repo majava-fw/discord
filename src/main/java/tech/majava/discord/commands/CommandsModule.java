@@ -31,6 +31,7 @@ import tech.majava.discord.commands.management.CommandsListener;
 import tech.majava.discord.commands.management.CommandsManager;
 import tech.majava.discord.components.ComponentsModule;
 import tech.majava.listeners.EntryPoint;
+import tech.majava.logging.LoggingModule;
 import tech.majava.modules.Module;
 
 import javax.annotation.Nonnull;
@@ -44,7 +45,7 @@ import java.util.stream.Collectors;
  * <p><b>Class {@link tech.majava.discord.commands.CommandsModule}</b></p>
  *
  * @author majksa
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  */
 @Getter
@@ -57,10 +58,11 @@ public final class CommandsModule extends Module<CommandsConfig> {
 
     public CommandsModule(@Nonnull CommandsConfig config, @Nonnull ApplicationContext context) {
         super(config, context, "discord-commands", "discord commands module for handling discord components in majava");
+        dependencies.add(LoggingModule.class);
         dependencies.add(DiscordModule.class);
         dependencies.add(ComponentsModule.class);
         convertor = new ConfigStructureConvertor();
-        context.getContainer().register(manager = new CommandsManager());
+        context.getContainer().register(manager = new CommandsManager(context));
     }
 
     @Nonnull

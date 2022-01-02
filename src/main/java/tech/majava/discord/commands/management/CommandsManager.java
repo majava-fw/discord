@@ -18,12 +18,14 @@
 
 package tech.majava.discord.commands.management;
 
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import org.jetbrains.annotations.NotNull;
+import tech.majava.context.ApplicationContext;
 import tech.majava.discord.commands.io.CommandException;
 import tech.majava.discord.commands.io.Response;
 import tech.majava.discord.commands.io.ResponseBuilder;
@@ -31,6 +33,7 @@ import tech.majava.discord.commands.registry.RegistrableCommand;
 import tech.majava.discord.commands.structure.CommandStructure;
 import tech.majava.discord.responses.MessageTemplate;
 import tech.majava.discord.responses.MessageTemplateImpl;
+import tech.majava.logging.LoggingModule;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -44,14 +47,18 @@ import java.util.stream.Collectors;
  * <p><b>Class {@link tech.majava.discord.commands.management.CommandsManager}</b></p>
  *
  * @author majksa
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  */
+@RequiredArgsConstructor
 public class CommandsManager {
 
     public static final @NotNull MessageTemplate INTERNAL_ERROR_TEMPLATE = new MessageTemplateImpl().append(":exclamation:").append("Internal error occurred");
 
     private final Map<Long, RegistrableCommand> commands = new ConcurrentHashMap<>();
+
+    @Nonnull
+    private ApplicationContext context;
 
     public CompletableFuture<Message> run(@Nonnull SlashCommandEvent event) {
         final Response response = runCommand(event, getCommand(event));
@@ -106,6 +113,7 @@ public class CommandsManager {
             responseBuilder.setTemplate(() -> new MessageTemplateImpl().append(":exclamation:").append(e.getMessage()));
             responseBuilder.setEphemeral(e.isEphemeral());
         } catch (Throwable throwable) {
+            context.getModules().get(LoggingModule.class).log(throwable);
             responseBuilder.setTemplate(INTERNAL_ERROR_TEMPLATE);
             responseBuilder.setEphemeral(true);
         }

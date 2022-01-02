@@ -20,6 +20,11 @@ package tech.majava.discord.commands.io;
 
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import tech.majava.discord.components.ComponentsModule;
+import tech.majava.discord.components.MessageComponents;
+import tech.majava.discord.responses.DefaultResponse;
 import tech.majava.discord.responses.MessageTemplate;
 import tech.majava.discord.responses.MessageTemplateImpl;
 
@@ -27,6 +32,7 @@ import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -34,7 +40,7 @@ import java.util.function.Supplier;
  * <p><b>Class {@link tech.majava.discord.commands.io.ResponseBuilder}</b></p>
  *
  * @author majksa
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  */
 @Getter
@@ -93,6 +99,14 @@ public class ResponseBuilder {
     public ResponseBuilder addCallback(@Nonnull Function<Message, CompletableFuture<?>> callback) {
         this.callbacks.add(callback);
         return this;
+    }
+
+    public ResponseBuilder setComponents(@Nonnull ComponentsModule componentsModule, @Nonnull Consumer<MessageComponents<MessageAction>> componentsConsumer) {
+        return addCallback(message -> {
+            final MessageComponents<MessageAction> components = new MessageComponents<>(componentsModule, DefaultResponse.edit(message, getTemplate().join()));
+            componentsConsumer.accept(components);
+            return components.modify().submit().thenAccept(unused -> {});
+        });
     }
 
     @Nonnull
